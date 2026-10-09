@@ -2,6 +2,7 @@ import React from 'react';
 import { ConfigProvider } from 'antd';
 import { QueryProvider } from './QueryProvider';
 import { ReduxProvider } from './ReduxProvider';
+import { AuthWatcher } from '@/stores/auth/AuthWatcher';
 
 interface Props {
   children: React.ReactNode;
@@ -40,7 +41,7 @@ export function AppProvider({ children }: Props) {
             },
           }}
         >
-          {children}
+          <AuthWatcher>{children}</AuthWatcher>
         </ConfigProvider>
       </QueryProvider>
     </ReduxProvider>

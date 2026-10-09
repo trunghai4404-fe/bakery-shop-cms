@@ -1,10 +1,9 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import BreadCrumb from './BreadCrumb';
 
-export const MainLayout: React.FC = () => {
+export const MainLayout = () => {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-surface font-sans text-on-surface">
       <Sidebar />

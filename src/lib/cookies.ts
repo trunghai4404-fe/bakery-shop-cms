@@ -2,8 +2,15 @@ import { BAKERY_ACCESS_TOKEN, BAKERY_REFRESH_TOKEN } from '@/config/Cookies';
 import Cookies from 'js-cookie';
 
 export const cookies = {
-    setAccessToken(token: string) {
-        Cookies.set(BAKERY_ACCESS_TOKEN, token);
+    setAccessToken(token: string, expireAt?: number | string | Date) {
+        if (expireAt) {
+            const expires = typeof expireAt === 'number'
+                ? new Date(Date.now() + expireAt * 1000)
+                : new Date(expireAt);
+            Cookies.set(BAKERY_ACCESS_TOKEN, token, { expires });
+        } else {
+            Cookies.set(BAKERY_ACCESS_TOKEN, token);
+        }
     },
 
     getAccessToken() {
@@ -14,8 +21,15 @@ export const cookies = {
         Cookies.remove(BAKERY_ACCESS_TOKEN);
     },
 
-    setRefreshToken(token: string) {
-        Cookies.set(BAKERY_REFRESH_TOKEN, token);
+    setRefreshToken(token: string, expireAt?: number | string | Date) {
+        if (expireAt) {
+            const expires = typeof expireAt === 'number'
+                ? new Date(Date.now() + expireAt * 1000)
+                : new Date(expireAt);
+            Cookies.set(BAKERY_REFRESH_TOKEN, token, { expires });
+        } else {
+            Cookies.set(BAKERY_REFRESH_TOKEN, token);
+        }
     },
 
     getRefreshToken() {

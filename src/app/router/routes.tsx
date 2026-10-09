@@ -1,13 +1,20 @@
 import type { RouteObject } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout';
-import DashboardPage from '@/pages/DashboardPage';
-import LoginPage from '@/pages/LoginPage';
-import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
+import ForgotPasswordPage from '@/features/login/ForgotPasswordPage';
+import ProtectedRoute from '@/app/router/ProtectedRoutes';
+import { lazy } from 'react';
+
+const DashboardPage = lazy(() => import('@/features/dashboard/DashboardPage'));
+const LoginPage = lazy(() => import('@/features/login/LoginPage'));
 
 export const routes: RouteObject[] = [
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

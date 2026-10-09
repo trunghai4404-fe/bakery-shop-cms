@@ -1,31 +1,19 @@
+import type { User } from "@/features/login/interface/auth.interface";
+import { cookies } from "@/lib/cookies";
 import { createSlice } from "@reduxjs/toolkit";
-
-interface AuthUser {
-    id: string;
-    fullName: string;
-    email: string;
-    phoneNumber: string;
-    avatar: string;
-    isActive: boolean;
-    sex: boolean | null;
-    lastLoginAt: Date | null;
-    createdAt: Date | null;
-    updatedAt: Date | null;
-    isDeleted: boolean;
-    deletedAt: Date | null;
-    roles: string[];
-    permissions: string[];
-}
+import { loginThunk, getProfileThunk, logoutThunk } from "../auth/auth.action";
 
 interface AuthState {
-    user: AuthUser | null;
+    user: User | null;
     isLoading: boolean;
+    error: string | null;
 }
 
 const initialState: AuthState = {
     user: null,
-    isLoading: false,
-}
+    isLoading: !!cookies.getAccessToken(),
+    error: null,
+};
 
 const authSlice = createSlice({
     name: 'auth',
@@ -40,10 +28,52 @@ const authSlice = createSlice({
         logout: (state) => {
             state.user = null;
             state.isLoading = false;
+            state.error = null;
+            cookies.clearAuth();
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(loginThunk.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(loginThunk.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.user = action.payload.user;
+                state.error = null;
+            })
+            .addCase(loginThunk.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = (action.payload as string) || 'Đăng nhập thất bại';
+            })
+            .addCase(getProfileThunk.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(getProfileThunk.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.user = action.payload;
+                state.error = null;
+            })
+            .addCase(getProfileThunk.rejected, (state, action) => {
+                state.isLoading = false;
+                state.user = null;
+                state.error = (action.payload as string) || 'Lỗi xác thực';
+            })
+            .addCase(logoutThunk.fulfilled, (state) => {
+                state.user = null;
+                state.isLoading = false;
+                state.error = null;
+            })
+            .addCase(logoutThunk.rejected, (state) => {
+                state.user = null;
+                state.isLoading = false;
+                state.error = null;
+            });
     }
-})
+});
 
 export const { setLoading, setUser, logout } = authSlice.actions;
 
-export default authSlice.reducer
+export default authSlice.reducer;
