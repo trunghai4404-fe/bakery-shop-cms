@@ -9,8 +9,7 @@ import type { ItemType, MenuItemType } from 'antd/es/menu/interface';
 import {
   FiGrid,
   FiShoppingBag,
-  FiBox,
-  FiFolder,
+  FiPackage,
   FiUsers,
   FiShield,
   FiSettings,
@@ -26,8 +25,15 @@ const { Sider } = Layout;
 const menuItems: ItemType<MenuItemType>[] = [
   { key: '/', label: 'Tổng quan', icon: <FiGrid className="w-4 h-4" /> },
   { key: '/orders', label: 'Quản lý đơn hàng', icon: <FiShoppingBag className="w-4 h-4" /> },
-  { key: '/products', label: 'Quản lý sản phẩm', icon: <FiBox className="w-4 h-4" /> },
-  { key: '/categories', label: 'Danh mục sản phẩm', icon: <FiFolder className="w-4 h-4" /> },
+  {
+    key: '/products',
+    label: 'Quản lý sản phẩm',
+    icon: <FiPackage className="w-4 h-4" />,
+    children: [
+      { key: '/products', label: 'Sản phẩm' },
+      { key: '/categories', label: 'Danh mục' },
+    ],
+  },
   { key: '/customers', label: 'Quản lý khách hàng', icon: <FiUsers className="w-4 h-4" /> },
   { key: '/analytics', label: 'Thống kê & Báo cáo', icon: <FiPieChart className="w-4 h-4" /> },
   { key: '/roles', label: 'Phân quyền & Vai trò', icon: <FiShield className="w-4 h-4" /> },

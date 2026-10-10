@@ -3,6 +3,7 @@ import MainLayout from '@/layouts/MainLayout';
 import ForgotPasswordPage from '@/features/login/ForgotPasswordPage';
 import ProtectedRoute from '@/app/router/ProtectedRoutes';
 import { lazy } from 'react';
+import CategoryPage from '@/features/categories/pages/CategoryPage';
 
 const DashboardPage = lazy(() => import('@/features/dashboard/DashboardPage'));
 const LoginPage = lazy(() => import('@/features/login/LoginPage'));
@@ -40,12 +41,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: 'categories',
-        element: (
-          <div className="p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/30">
-            <h1 className="text-xl font-bold">Danh mục sản phẩm</h1>
-            <p className="text-sm text-on-surface-variant mt-1">Quản lý các loại sản phẩm.</p>
-          </div>
-        ),
+        element: <CategoryPage />,
       },
       {
         path: 'customers',

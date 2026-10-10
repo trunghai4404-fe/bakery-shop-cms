@@ -80,3 +80,37 @@ body {
   background-color: var(--color-background);
   color: var(--color-on-surface);
 }
+
+/* Ant Design Menu - Custom Styles */
+
+.ant-menu-item-selected,
+.ant-menu-submenu-selected>.ant-menu-submenu-title {
+  background-color: #F2E3E7 !important;
+  color: #5E3642 !important;
+  font-weight: 700 !important;
+}
+
+.ant-menu-item-selected:hover,
+.ant-menu-submenu-selected>.ant-menu-submenu-title:hover {
+  background-color: #EBD4DB !important;
+}
+
+.ant-menu-item-selected .ant-menu-item-icon,
+.ant-menu-item-selected .ant-menu-title-content,
+.ant-menu-submenu-selected>.ant-menu-submenu-title .ant-menu-item-icon,
+.ant-menu-submenu-selected>.ant-menu-submenu-title .ant-menu-title-content,
+.ant-menu-submenu-selected>.ant-menu-submenu-title .ant-menu-submenu-arrow {
+  color: #5E3642 !important;
+}
+
+.ant-menu-submenu-open:not(.ant-menu-submenu-selected)>.ant-menu-submenu-title {
+  background-color: transparent !important;
+  color: #4A3B37 !important;
+  font-weight: 600 !important;
+}
+
+.ant-menu-submenu-open:not(.ant-menu-submenu-selected)>.ant-menu-submenu-title .ant-menu-item-icon,
+.ant-menu-submenu-open:not(.ant-menu-submenu-selected)>.ant-menu-submenu-title .ant-menu-title-content,
+.ant-menu-submenu-open:not(.ant-menu-submenu-selected)>.ant-menu-submenu-title .ant-menu-submenu-arrow {
+  color: #4A3B37 !important;
+}

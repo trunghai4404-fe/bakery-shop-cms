@@ -5,7 +5,7 @@ import { FiHome, FiChevronRight } from 'react-icons/fi';
 const pathNameMap: Record<string, string> = {
   orders: 'Đơn hàng',
   products: 'Sản phẩm',
-  categories: 'Danh mục',
+  categories: 'Danh mục sản phẩm',
   customers: 'Khách hàng',
   analytics: 'Thống kê',
   roles: 'Phân quyền',

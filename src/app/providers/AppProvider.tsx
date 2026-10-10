@@ -25,15 +25,25 @@ export function AppProvider({ children }: Props) {
               borderRadiusLG: 12,
             },
             components: {
+              Button: {
+                colorPrimary: '#B86B82',
+                colorPrimaryHover: '#9E546B',
+                colorPrimaryActive: '#854055',
+                primaryColor: '#FFFFFF',
+              },
               Menu: {
                 itemBg: 'transparent',
-                itemColor: '#806D67',
+                itemColor: '#4A3B37',
                 itemSelectedColor: '#5E3642',
-                itemSelectedBg: '#F7E4E9',
-                itemHoverColor: '#4B4140',
-                itemHoverBg: '#F3E7E2',
+                itemSelectedBg: '#F2E3E7',
+                itemHoverColor: '#382B28',
+                itemHoverBg: '#F0E2DC',
                 itemMarginInline: 8,
                 itemBorderRadius: 6,
+              },
+              Switch: {
+                colorPrimary: '#7E9A79',
+                colorPrimaryHover: '#6B8766',
               },
               Layout: {
                 siderBg: '#FCF7F3',

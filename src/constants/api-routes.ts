@@ -9,5 +9,8 @@ const BASE_URL = `${BASE_API}${API}${version}`;
 export const ApiRoutes = {
     AUTH: `${BASE_URL}/auth`,
     REFRESH_TOKEN: `${BASE_URL}/auth/refresh-token`,
-    ME: `${BASE_URL}/users/me`
+    ME: `${BASE_URL}/users/me`,
+    CATEGORIES: `${BASE_URL}/categories`,
+    PRODUCTS: `${BASE_URL}/products`,
+    CONTENTS: `${BASE_URL}/contents`,
 };
