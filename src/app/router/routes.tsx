@@ -4,6 +4,8 @@ import ForgotPasswordPage from '@/features/login/ForgotPasswordPage';
 import ProtectedRoute from '@/app/router/ProtectedRoutes';
 import { lazy } from 'react';
 import CategoryPage from '@/features/categories/pages/CategoryPage';
+import ProductPage from '@/features/products/pages/ProductPage';
+import ProductDetail from '@/features/products/pages/ProductDetail';
 
 const DashboardPage = lazy(() => import('@/features/dashboard/DashboardPage'));
 const LoginPage = lazy(() => import('@/features/login/LoginPage'));
@@ -32,12 +34,20 @@ export const routes: RouteObject[] = [
       },
       {
         path: 'products',
-        element: (
-          <div className="p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/30">
-            <h1 className="text-xl font-bold">Quản lý sản phẩm</h1>
-            <p className="text-sm text-on-surface-variant mt-1">Danh sách sản phẩm bánh ngọt & nguyên liệu.</p>
-          </div>
-        ),
+        children: [
+          {
+            index: true,
+            element: <ProductPage />,
+          },
+          {
+            path: 'create',
+            element: <ProductDetail />,
+          },
+          {
+            path: ':id/edit',
+            element: <ProductDetail />,
+          },
+        ],
       },
       {
         path: 'categories',

@@ -58,6 +58,10 @@ export const BreadCrumb = () => {
       </Link>
 
       {pathnames.map((value, index) => {
+        if (isIdSegment(value)) {
+          return null;
+        }
+
         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
         const isLast = index === pathnames.length - 1;
 

@@ -11,18 +11,18 @@ import {
   Avatar,
   Card,
   Tooltip,
-  Pagination,
   Spin,
   Empty,
 } from 'antd';
+import { PaginationCustom } from '@/components/ui/PaginationCustom';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import {
   PlusOutlined,
   FolderOutlined,
-  ReloadOutlined,
   EyeOutlined,
   DeleteOutlined,
   StarOutlined,
+  ReloadOutlined,
 } from '@ant-design/icons';
 import {
   useCategories,
@@ -78,26 +78,26 @@ export const CategoryPage = () => {
     }));
   };
 
-  const handleStatusChange = (value?: boolean) => {
+  const handleStatusChange = (value: string) => {
     setParams((prev) => ({
       ...prev,
-      isActive: value,
+      isActive: value === 'all' ? undefined : value === 'true',
       page: 1,
     }));
   };
 
-  const handleTypeChange = (value?: boolean) => {
+  const handleTypeChange = (value: string) => {
     setParams((prev) => ({
       ...prev,
-      isRoot: value,
+      isRoot: value === 'all' ? undefined : value === 'true',
       page: 1,
     }));
   };
 
-  const handleFeaturedChange = (value?: boolean) => {
+  const handleFeaturedChange = (value: string) => {
     setParams((prev) => ({
       ...prev,
-      isFeatured: value,
+      isFeatured: value === 'all' ? undefined : value === 'true',
       page: 1,
     }));
   };
@@ -199,12 +199,16 @@ export const CategoryPage = () => {
             icon={<FolderOutlined className="text-stone-400 text-lg" />}
             className="bg-stone-100 border border-stone-200 rounded-md shrink-0"
           />
-          <div className="flex flex-col">
-            <span className="font-semibold text-stone-800 hover:text-pink-600 transition-colors">
-              {name}
-            </span>
-            <span className="text-xs text-stone-400 font-mono">/{record.slug}</span>
-          </div>
+          <Tooltip
+            title={name}
+            className='w-80'
+          >
+            <div className="flex flex-col">
+              <span className="font-semibold text-stone-800 hover:text-pink-600 transition-colors">
+                {name}
+              </span>
+            </div>
+          </Tooltip>
         </div>
       ),
     },
@@ -254,32 +258,6 @@ export const CategoryPage = () => {
         ),
     },
     {
-      title: 'Trạng thái',
-      dataIndex: 'isActive',
-      key: 'isActive',
-      align: 'center',
-      width: 140,
-      render: (isActive: boolean, record: CategoryList) => (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="flex items-center justify-center gap-2"
-        >
-          <Switch
-            checked={isActive}
-            loading={togglingId === record.id}
-            onChange={(checked, e) => handleToggleActive(record, checked, e)}
-            size="small"
-          />
-          <span
-            className={`text-xs font-semibold ${isActive ? 'text-emerald-700' : 'text-stone-400'
-              }`}
-          >
-            {isActive ? 'Bật' : 'Tắt'}
-          </span>
-        </div>
-      ),
-    },
-    {
       title: 'Thứ tự',
       dataIndex: 'sortOrder',
       key: 'sortOrder',
@@ -306,32 +284,29 @@ export const CategoryPage = () => {
       ),
     },
     {
-      title: '',
-      key: 'actions',
+      title: 'Trạng thái',
+      dataIndex: 'isActive',
+      key: 'isActive',
+      fixed: 'right',
       align: 'center',
       width: 100,
-      render: (_, record: CategoryList) => (
-        <Space size="small" onClick={(e) => e.stopPropagation()}>
-          <Tooltip title="Xem chi tiết">
-            <Button
-              type="text"
-              size="small"
-              icon={<EyeOutlined className="text-stone-500 hover:text-stone-800" />}
-              onClick={() => handleRowClick(record)}
-              className="border! border-outline!"
-            />
-          </Tooltip>
-          <Tooltip title="Xóa">
-            <Button
-              type="text"
-              danger
-              size="small"
-              icon={<DeleteOutlined className="text-red-500 hover:text-red-700" />}
-              onClick={(e) => handleDeleteConfirm(record, e)}
-              className="border! border-outline!"
-            />
-          </Tooltip>
-        </Space>
+      render: (isActive: boolean, record: CategoryList) => (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="flex items-center justify-center gap-2"
+        >
+          <Switch
+            checked={isActive}
+            loading={togglingId === record.id}
+            onChange={(checked, e) => handleToggleActive(record, checked, e)}
+            size="small"
+          />
+          <span
+            className={`text-xs font-semibold ${isActive ? 'text-emerald-700' : 'text-stone-400'
+              }`}
+          >
+          </span>
+        </div>
       ),
     },
   ];
@@ -372,58 +347,58 @@ export const CategoryPage = () => {
           header: "p-4!"
         }}
         title={
-          <div className="w-full space-y-2.5 md:space-y-0 md:flex md:flex-wrap md:items-center md:gap-3">
-            <div className="w-full md:w-auto md:max-w-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 items-center">
+            <div className="md:col-span-4">
               <Input.Search
                 placeholder="Tìm theo tên danh mục, slug..."
                 allowClear
                 enterButton
-                size="middle"
-                className="w-full rounded-lg"
+                className="w-full"
                 onSearch={(value) => handleSearchChange(value)}
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:gap-3">
+            <div className="md:col-span-2">
               <Select
                 placeholder="Trạng thái"
                 options={CATEGORY_STATUS_OPTIONS}
-                value={params.isActive}
+                value={params.isActive === undefined ? 'all' : String(params.isActive)}
                 onChange={handleStatusChange}
-                size="middle"
-                className="w-full md:w-40"
+                className="w-full"
               />
+            </div>
 
+            <div className="md:col-span-2">
               <Select
                 placeholder="Nổi bật"
                 options={CATEGORY_FEATURED_OPTIONS}
-                value={params.isFeatured}
+                value={params.isFeatured === undefined ? 'all' : String(params.isFeatured)}
                 onChange={handleFeaturedChange}
-                size="middle"
-                className="w-full md:w-36"
+                className="w-full"
               />
             </div>
 
-            <div className="flex items-center gap-2 w-full md:w-auto md:gap-3">
+            <div className="md:col-span-2">
               <Select
                 placeholder="Phân loại"
                 options={CATEGORY_TYPE_OPTIONS}
-                value={params.isRoot}
+                value={params.isRoot === undefined ? 'all' : String(params.isRoot)}
                 onChange={handleTypeChange}
-                size="middle"
-                className="w-full md:w-40"
+                className="w-full"
               />
-              <Button
-                icon={<ReloadOutlined />}
-                disabled={!hasActiveFilters}
-                onClick={handleResetFilters}
-                size="middle"
-                className="text-stone-500 hover:text-stone-800 shrink-0"
-              >
-                Đặt lại
-              </Button>
-
             </div>
+
+            {!isMobile && (
+              <div className="flex justify-end md:col-span-2">
+                <Button
+                  disabled={!hasActiveFilters}
+                  onClick={handleResetFilters}
+                  icon={<ReloadOutlined />}
+                >
+                  Đặt lại
+                </Button>
+              </div>
+            )}
           </div>
         }
       >
@@ -540,49 +515,52 @@ export const CategoryPage = () => {
                   ))}
                 </div>
 
-                <div className="flex justify-center pt-2">
-                  <Pagination
-                    current={params.page || 1}
-                    pageSize={params.pageSize || 10}
-                    total={categoriesData?.totalCount || 0}
-                    onChange={(page, pageSize) => {
-                      setParams((prev) => ({
-                        ...prev,
-                        page,
-                        pageSize,
-                      }));
-                    }}
-                    size="small"
-                    align="center"
-                    showSizeChanger
-                    pageSizeOptions={['10', '20', '50']}
-                  // showTotal={(total) => `${total} danh mục`}
-                  />
-                </div>
+                <PaginationCustom
+                  current={params.page || 1}
+                  pageSize={params.pageSize || 10}
+                  total={categoriesData?.totalCount || 0}
+                  currentItemsCount={categoriesData?.items?.length || 0}
+                  itemLabel="danh mục"
+                  onChange={(page, pageSize) => {
+                    setParams((prev) => ({
+                      ...prev,
+                      page,
+                      pageSize,
+                    }));
+                  }}
+                  containerClassName="border-t-0 bg-transparent p-0 pt-2"
+                />
               </>
             )}
           </div>
         ) : (
-          <Table<CategoryList>
-            rowKey="id"
-            columns={columns}
-            dataSource={categoriesData?.items || []}
-            loading={isLoading || isFetching}
-            onChange={handleTableChange}
-            onRow={(record) => ({
-              onClick: () => handleRowClick(record),
-              className: 'cursor-pointer hover:bg-stone-50 transition-colors',
-            })}
-            scroll={{ x: 1200 }}
-            pagination={{
-              current: params.page || 1,
-              pageSize: params.pageSize || 10,
-              total: categoriesData?.totalCount || 0,
-              showSizeChanger: true,
-              pageSizeOptions: ['10', '20', '50'],
-              showTotal: (total) => `${total} danh mục`,
-            }}
-          />
+          <div className='flex flex-col gap-4'>
+            <Table<CategoryList>
+              rowKey="id"
+              columns={columns}
+              dataSource={categoriesData?.items || []}
+              loading={isLoading || isFetching}
+              onChange={handleTableChange}
+              onRow={(record) => ({
+                onClick: () => handleRowClick(record),
+                className: 'cursor-pointer hover:bg-stone-50 transition-colors',
+              })}
+              scroll={{ x: 'max-content' }}
+              pagination={false}
+            />
+            <PaginationCustom
+              current={params.page}
+              pageSize={params.pageSize}
+              total={categoriesData?.totalCount || 0}
+              currentItemsCount={categoriesData?.items?.length || 0}
+              itemLabel="danh mục"
+              onChange={(page, pageSize) =>
+                setParams((prev) => ({ ...prev, page, pageSize }))
+              }
+            />
+
+
+          </div>
         )}
       </Card>
 

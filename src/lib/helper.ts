@@ -1,3 +1,5 @@
+import { ERROR_CODES } from "@/constants/errors";
+
 export const DATE_TIME_FORMATS = {
   FULL: 'HH:mm:ss DD/MM/YYYY',
   DATETIME: 'HH:mm DD/MM/YYYY',
@@ -52,4 +54,55 @@ export const formatTime = (
     .replace(/HH/gi, hours)
     .replace(/mm/g, minutes)
     .replace(/ss/gi, seconds);
+};
+
+export const slugify = (text: string): string => {
+  if (!text) return '';
+  let str = text.toLowerCase();
+  str = str.replace(/á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/g, 'a');
+  str = str.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/g, 'e');
+  str = str.replace(/i|í|ì|ỉ|ĩ|ị/g, 'i');
+  str = str.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/g, 'o');
+  str = str.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/g, 'u');
+  str = str.replace(/ý|ỳ|ỷ|ỹ|ỵ/g, 'y');
+  str = str.replace(/đ/g, 'd');
+  str = str.replace(/[^a-z0-9 -]/g, '');
+  str = str.replace(/\s+/g, '-');
+  str = str.replace(/-+/g, '-');
+  str = str.replace(/^-+|-+$/g, '');
+  return str;
+};
+
+export const formatCurrency = (amount?: number | null, fallback: string = '0 ₫'): string => {
+  if (amount === undefined || amount === null || isNaN(amount)) return fallback;
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+};
+
+export const getErrorMessage = (error: any, fallBackMsg: string = "Có lỗi xảy ra") => {
+  const errorCode =
+    error?.errors?.[0]?.code ||
+    error?.response?.data?.errors?.[0]?.code ||
+    error?.errorCode ||
+    error?.response?.data?.errorCode;
+
+  if (!errorCode) {
+    return fallBackMsg;
+  }
+
+  switch (errorCode) {
+    case ERROR_CODES.VALIDATION_ERROR:
+      return 'Dữ liệu không hợp lệ';
+    case ERROR_CODES.PRODUCT_NOT_FOUND:
+      return 'Không tìm thấy sản phẩm';
+    case ERROR_CODES.PRODUCT_SLUG_ALREADY_EXISTS:
+      return 'Slug sản phẩm đã tồn tại';
+    case ERROR_CODES.PRODUCT_SKU_ALREADY_EXISTS:
+      return 'SKU sản phẩm đã tồn tại';
+    case ERROR_CODES.UNAUTHORIZED:
+      return 'Không có quyền truy cập';
+    case ERROR_CODES.FORBIDDEN:
+      return 'Không có quyền';
+    default:
+      return fallBackMsg;
+  }
 };

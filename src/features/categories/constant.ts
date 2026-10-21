@@ -9,21 +9,21 @@ export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_SIZE = 10;
 
 export const CATEGORY_STATUS_OPTIONS = [
-    { label: 'Tất cả trạng thái', value: undefined },
-    { label: 'Đang hoạt động', value: true },
-    { label: 'Ngưng hoạt động', value: false },
+    { label: 'Trạng thái', value: 'all' },
+    { label: 'Đang hoạt động', value: 'true' },
+    { label: 'Ngưng hoạt động', value: 'false' },
 ];
 
 export const CATEGORY_TYPE_OPTIONS = [
-    { label: 'Tất cả phân loại', value: undefined },
-    { label: 'Danh mục gốc', value: true },
-    { label: 'Danh mục con', value: false },
+    { label: 'Phân loại', value: 'all' },
+    { label: 'Danh mục gốc', value: 'true' },
+    { label: 'Danh mục con', value: 'false' },
 ];
 
 export const CATEGORY_FEATURED_OPTIONS = [
-    { label: 'Tất cả nổi bật', value: undefined },
-    { label: 'Nổi bật', value: true },
-    { label: 'Không nổi bật', value: false },
+    { label: 'Tất cả', value: 'all' },
+    { label: 'Nổi bật', value: 'true' },
+    { label: 'Không nổi bật', value: 'false' },
 ];
 
 

@@ -49,6 +49,29 @@ export const useParentCategoryOptions = (params?: { search?: string; enabled?: b
   });
 };
 
+export const useInfiniteCategories = (params?: { search?: string; enabled?: boolean; pageSize?: number }) => {
+  const { search, enabled = true, pageSize = 15 } = params || {};
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEY.CATEGORIES, 'infinite', search],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await CategoriesApi.getAll({
+        search: search ? search.trim() : undefined,
+        isActive: true,
+        page: pageParam as number,
+        pageSize,
+      });
+      return response.data;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage) return undefined;
+      return lastPage.hasNextPage ? lastPage.page + 1 : undefined;
+    },
+    enabled,
+    staleTime: 1000 * 60 * 2,
+  });
+};
+
 export const useCreateCategory = () => {
   const queryClient = useQueryClient();
 
